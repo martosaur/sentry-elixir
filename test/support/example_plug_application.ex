@@ -36,7 +36,17 @@ defmodule Sentry.ExamplePlugApplication do
   end
 
   get "/spawn_error_route" do
-    {_pid, ref} = spawn_monitor(fn -> raise "Error" end)
+    {pid, ref} =
+      spawn_monitor(fn ->
+        receive do
+          :go -> :ok
+        end
+
+        raise "Error"
+      end)
+
+    LoggerHandlerKit.Arrange.allow(self(), pid, conn.private[:handler_id])
+    send(pid, :go)
     assert_receive {:DOWN, ^ref, _, _, _}
     send_resp(conn, 200, "")
   end

@@ -111,7 +111,8 @@ defmodule Sentry.Mixfile do
       # Required by Phoenix.LiveView's testing
       {:floki, ">= 0.30.0", only: :test},
       {:oban, "~> 2.17 and >= 2.17.6", only: [:test]},
-      {:quantum, "~> 3.0", only: [:test]}
+      {:quantum, "~> 3.0", only: [:test]},
+      {:logger_handler_kit, "~> 0.1", only: :test}
     ]
   end
 
